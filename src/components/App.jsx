@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import { useState, useEffect } from 'react';
 import { ToastContainer } from 'react-toastify';
 
 import { GalleryApi } from './Gallery/GalleryApi';
@@ -11,91 +11,69 @@ import Modal from './Gallery/Modal/Modal';
 import 'react-toastify/dist/ReactToastify.css';
 import 'index.css';
 
-export default class App extends Component {
-  state = {
-    inputValue: '',
-    gallery: [],
-    loading: false,
-    page: 1,
-    showModal: false,
-    modalImg: '',
-  };
+export default function App() {
+  const [inputValue, setInputValue] = useState('');
+  const [gallery, setGallery] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [page, setPage] = useState(1);
+  const [showModal, setShowModal] = useState(false);
+  const [modalImg, setModalImg] = useState('');
 
-  componentDidUpdate(prevProps, prevState) {
-    const prevValue = prevState.inputValue;
-    const nextValue = this.state.inputValue;
-
-    if (prevValue !== nextValue) {
-      this.setState({ gallery: [] });
-
-      this.showImages();
+  useEffect(() => {
+    if (!inputValue) {
+      return;
     }
-  }
 
-  showImages = () => {
-    const nextValue = this.state.inputValue;
-    const nextPage = this.state.page;
-    // console.log(nextPage);
+    setGallery([]);
+    showImages();
+  }, [inputValue]);
 
-    this.setState({ loading: true });
+  const showImages = () => {
+    setLoading(true);
 
-    GalleryApi(nextValue, nextPage)
+    GalleryApi(inputValue, page)
       .then(response => {
-        this.setState(prevState => ({
-          gallery: [...prevState.gallery, ...response.data.hits],
-          page: prevState.page + 1,
-        }));
+        setGallery(state => [...state, ...response.data.hits]);
+        setPage(state => state + 1);
       })
       .catch(function (error) {
         console.log(error);
       })
-      .finally(() => this.setState({ loading: false }));
+      .finally(() => setLoading(false));
   };
 
-  handleFormSubmit = ({ value }) => {
-    this.setState({
-      inputValue: value,
-      page: 1,
-    });
+  const handleFormSubmit = value => {
+    setInputValue(value);
+    setPage(1);
   };
 
-  LargeImg = large => {
-    this.setState({
-      modalImg: large,
-    });
+  const LargeImg = large => {
+    setModalImg(large);
   };
 
-  toggleModal = () => {
-    this.setState(({ showModal }) => ({
-      showModal: !showModal,
-    }));
+  const toggleModal = () => {
+    setShowModal(!showModal);
   };
 
-  render() {
-    const { gallery, loading, showModal, modalImg } = this.state;
+  return (
+    <div className="App">
+      <Searchbar onSubmit={handleFormSubmit} />
+      {gallery.length > 0 && (
+        <ImageGallery
+          options={gallery}
+          onClick={toggleModal}
+          modalImg={LargeImg}
+        />
+      )}
+      {loading && <Loader />}
+      {gallery.length > 0 && !loading && <Button nextPage={showImages} />}
+      {showModal && (
+        <Modal onClick={toggleModal}>
+          <img style={{ width: 1000 }} src={modalImg} alt="modal" />
+        </Modal>
+      )}
 
-    return (
-      <div className="App">
-        <Searchbar onSubmit={this.handleFormSubmit} />
-        {gallery.length > 0 && (
-          <ImageGallery
-            options={gallery}
-            onClick={this.toggleModal}
-            modalImg={this.LargeImg}
-          />
-        )}
-        {loading && <Loader />}
-        {gallery.length > 0 && !loading && (
-          <Button nextPage={this.showImages} />
-        )}
-        {showModal && (
-          <Modal onClick={this.toggleModal}>
-            <img style={{ width: 1000 }} src={modalImg} alt="modal" />
-          </Modal>
-        )}
-
-        <ToastContainer autoClose={3000} />
-      </div>
-    );
-  }
+      <ToastContainer autoClose={3000} />
+    </div>
+  );
 }

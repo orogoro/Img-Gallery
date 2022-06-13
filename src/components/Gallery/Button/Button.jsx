@@ -1,4 +1,4 @@
-// import React, { Component } from 'react';
+import React from 'react';
 import styles from './Button.module.css';
 import PropTypes from 'prop-types';
 
@@ -13,18 +13,3 @@ export default function Button({ nextPage }) {
 Button.propTypes = {
   nextPage: PropTypes.func,
 };
-
-// export default class Button extends Component {
-//   render() {
-
-//     return (
-//       <button
-//         className={styles.Button}
-//         type="button"
-//         onClick={this.props.nextPage}
-//       >
-//         Load more
-//       </button>
-//     );
-//   }
-// }
