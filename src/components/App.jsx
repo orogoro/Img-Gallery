@@ -24,27 +24,25 @@ export default function App() {
       return;
     }
 
-    setGallery([]);
-    showImages();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [inputValue]);
-
-  const showImages = () => {
     setLoading(true);
 
     GalleryApi(inputValue, page)
       .then(response => {
         setGallery(state => [...state, ...response.data.hits]);
-        setPage(state => state + 1);
       })
       .catch(function (error) {
         console.log(error);
       })
       .finally(() => setLoading(false));
+  }, [inputValue, page]);
+
+  const nextPage = () => {
+    setPage(state => state + 1);
   };
 
   const handleFormSubmit = value => {
     setInputValue(value);
+    setGallery([]);
     setPage(1);
   };
 
@@ -67,7 +65,7 @@ export default function App() {
         />
       )}
       {loading && <Loader />}
-      {gallery.length > 0 && !loading && <Button nextPage={showImages} />}
+      {gallery.length > 0 && !loading && <Button nextPage={nextPage} />}
       {showModal && (
         <Modal onClick={toggleModal}>
           <img style={{ width: 1000 }} src={modalImg} alt="modal" />
