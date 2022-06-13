@@ -26,7 +26,6 @@ export default function App() {
 
     setGallery([]);
     showImages();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [inputValue]);
 
   const showImages = () => {
