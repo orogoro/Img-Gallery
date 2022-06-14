@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { ToastContainer } from 'react-toastify';
+import { animateScroll as scroll } from 'react-scroll';
 
 import { GalleryApi } from './Gallery/GalleryApi';
 import Searchbar from './Gallery/Searchbar/Searchbar';
@@ -38,6 +39,7 @@ export default function App() {
 
   const nextPage = () => {
     setPage(state => state + 1);
+    scroll.scrollToBottom();
   };
 
   const handleFormSubmit = value => {
