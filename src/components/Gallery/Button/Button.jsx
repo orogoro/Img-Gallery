@@ -11,5 +11,5 @@ export default function Button({ nextPage }) {
 }
 
 Button.propTypes = {
-  nextPage: PropTypes.func,
+  nextPage: PropTypes.func.isRequired,
 };

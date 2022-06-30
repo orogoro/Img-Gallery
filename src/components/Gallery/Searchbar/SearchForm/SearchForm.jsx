@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { toast } from 'react-toastify';
+import PropTypes from 'prop-types';
 import styles from './SearchForm.module.css';
 
 export default function SearchForm({ onSubmit }) {
@@ -39,3 +40,7 @@ export default function SearchForm({ onSubmit }) {
     </form>
   );
 }
+
+SearchForm.propTypes = {
+  onSubmit: PropTypes.func.isRequired,
+};

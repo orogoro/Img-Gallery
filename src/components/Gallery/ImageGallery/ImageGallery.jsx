@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import ImageGalleryItem from '../ImageGalleryItem/ImageGalleryItem';
 
 import styles from './ImageGallery.module.css';
@@ -22,3 +23,16 @@ export default function ImageGallery({ options, onClick, modalImg }) {
     </ul>
   );
 }
+
+ImageGallery.propTypes = {
+  options: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      webformatURL: PropTypes.string.isRequired,
+      largeImageURL: PropTypes.string.isRequired,
+      tags: PropTypes.string.isRequired,
+    })
+  ),
+  onClick: PropTypes.func.isRequired,
+  modalImg: PropTypes.func.isRequired,
+};

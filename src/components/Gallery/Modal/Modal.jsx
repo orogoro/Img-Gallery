@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { createPortal } from 'react-dom';
+import PropTypes from 'prop-types';
 
 import styles from './Modal.module.css';
 
@@ -33,3 +34,8 @@ export default function Modal({ onClick, children }) {
     modalRoot
   );
 }
+
+Modal.propTypes = {
+  onClick: PropTypes.func.isRequired,
+  children: PropTypes.element.isRequired,
+};
