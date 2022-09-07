@@ -82,7 +82,7 @@ export default function App() {
       )}
       {showModal && (
         <Modal onClick={toggleModal}>
-          <img src={modalImg} alt={'modal-photo'} />
+          <img src={modalImg} alt="modal" />
         </Modal>
       )}
 
