@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { ToastContainer } from 'react-toastify';
+import { toast } from 'react-toastify';
 import { animateScroll as scroll } from 'react-scroll';
 
 import { GalleryApi } from './Gallery/GalleryApi';
@@ -17,6 +18,7 @@ export default function App() {
   const [gallery, setGallery] = useState([]);
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
+  const [totalPage, setTotalPage] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [modalImg, setModalImg] = useState('');
 
@@ -29,7 +31,8 @@ export default function App() {
 
     GalleryApi(inputValue, page)
       .then(response => {
-        setGallery(state => [...state, ...response.data.hits]);
+        setGallery(state => [...state, ...response.data.results]);
+        setTotalPage(response.data.total_pages);
       })
       .catch(function (error) {
         console.log(error);
@@ -43,6 +46,13 @@ export default function App() {
   };
 
   const handleFormSubmit = value => {
+    if (inputValue === value) {
+      toast.warning('Введите новый запрос', {
+        theme: 'colored',
+      });
+      return;
+    }
+
     setInputValue(value);
     setGallery([]);
     setPage(1);
@@ -67,10 +77,12 @@ export default function App() {
         />
       )}
       {loading && <Loader />}
-      {gallery.length > 0 && !loading && <Button nextPage={nextPage} />}
+      {gallery.length > 0 && !loading && page !== totalPage && (
+        <Button nextPage={nextPage} />
+      )}
       {showModal && (
         <Modal onClick={toggleModal}>
-          <img style={{ width: 1000 }} src={modalImg} alt="modal" />
+          <img src={modalImg} alt="photo" />
         </Modal>
       )}
 

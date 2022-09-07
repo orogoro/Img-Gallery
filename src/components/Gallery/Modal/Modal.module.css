@@ -11,7 +11,13 @@
   z-index: 1200;
 }
 
-.Modal {
-  max-width: calc(100vw - 48px);
+/* .Modal {
   max-height: calc(100vh - 24px);
+  max-width: calc(100vw - 48px);
+} */
+
+.Modal > img {
+  /* object-fit: cover; */
+  max-height: calc(100vh - 24px);
+  max-width: calc(100vw - 48px);
 }

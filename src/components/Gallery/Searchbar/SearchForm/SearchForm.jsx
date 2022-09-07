@@ -14,7 +14,9 @@ export default function SearchForm({ onSubmit }) {
     e.preventDefault();
 
     if (value.trim() === '') {
-      toast.error('Вы ничего не ввели');
+      toast.error('Вы ничего не ввели', {
+        theme: 'colored',
+      });
       return;
     }
 

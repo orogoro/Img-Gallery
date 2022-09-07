@@ -5,21 +5,21 @@ import ImageGalleryItem from '../ImageGalleryItem/ImageGalleryItem';
 import styles from './ImageGallery.module.css';
 
 export default function ImageGallery({ options, onClick, modalImg }) {
-  const largeUrlImage = e => {
-    modalImg(e.target.dataset.large);
-  };
-
   return (
-    <ul className={styles.ImageGallery} onClick={largeUrlImage}>
-      {options.map(({ id, webformatURL, largeImageURL, tags }) => (
-        <ImageGalleryItem
-          key={id}
-          webformatURL={webformatURL}
-          largeImageURL={largeImageURL}
-          tags={tags}
-          onClick={onClick}
-        />
-      ))}
+    <ul className={styles.ImageGallery}>
+      {options.map(
+        ({ id, urls: { small, regular }, alt_description, user: { name } }) => (
+          <ImageGalleryItem
+            key={id}
+            webformatURL={small}
+            largeImageURL={regular}
+            tags={alt_description}
+            autor={name}
+            onClick={onClick}
+            modalImg={modalImg}
+          />
+        )
+      )}
     </ul>
   );
 }
@@ -27,10 +27,15 @@ export default function ImageGallery({ options, onClick, modalImg }) {
 ImageGallery.propTypes = {
   options: PropTypes.arrayOf(
     PropTypes.shape({
-      id: PropTypes.number.isRequired,
-      webformatURL: PropTypes.string.isRequired,
-      largeImageURL: PropTypes.string.isRequired,
-      tags: PropTypes.string.isRequired,
+      id: PropTypes.string.isRequired,
+      urls: PropTypes.shape({
+        small: PropTypes.string.isRequired,
+        regular: PropTypes.string.isRequired,
+      }),
+      alt_description: PropTypes.string,
+      user: PropTypes.shape({
+        name: PropTypes.string.isRequired,
+      }),
     })
   ),
   onClick: PropTypes.func.isRequired,
