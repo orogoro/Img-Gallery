@@ -3,7 +3,7 @@ import { ToastContainer } from 'react-toastify';
 import { toast } from 'react-toastify';
 import { animateScroll as scroll } from 'react-scroll';
 
-import { GalleryApi } from './Gallery/GalleryApi';
+import { GalleryApi } from '../helper/GalleryApi';
 import Searchbar from './Gallery/Searchbar/Searchbar';
 import ImageGallery from './Gallery/ImageGallery/ImageGallery';
 import Loader from './Gallery/Loader/Loader';
@@ -82,7 +82,7 @@ export default function App() {
       )}
       {showModal && (
         <Modal onClick={toggleModal}>
-          <img src={modalImg} alt="photo" />
+          <img src={modalImg} alt={'modal-photo'} />
         </Modal>
       )}
 
